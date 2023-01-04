@@ -16,10 +16,23 @@ class _WelcomeScreenState extends State<DrawerCustom> {
   //   return ['hi', 'hello', 'hagdok'];
   // }
 
+  bool isExpanded = false;
+
   List<String> items = [
     'CPE 411 - Mechanics of Deformable Bodies', 
     'CPE 416 - Artificial Intelligence', 
     'CPE 415 - Embedded Systems'
+  ];
+
+  List<String> defClassContent = [
+    'General',
+    'Lecture Materials',
+    'Activities',
+    'Quizzes',
+    'Major Exams',
+    'Projects',
+    'Group Chat',
+    '+ Add Channel',
   ];
 
   @override 
@@ -49,11 +62,13 @@ class _WelcomeScreenState extends State<DrawerCustom> {
           slivers: [
             SliverList(
               delegate: SliverChildListDelegate([
-                ListTile(
+                const ListTile(
                   title: Text(
                     'Classrooms',
                     style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.height * 0.05,
+                      // fontSize: MediaQuery.of(context).size.height * 0.03,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   )
@@ -62,14 +77,45 @@ class _WelcomeScreenState extends State<DrawerCustom> {
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) => ListTile(
-                  title: Text(
-                    items[index],
-                    style: const TextStyle(
-                      color: Colors.white,
+                (context, index){
+                  return InkWell(
+                    onTap: () {
+                      // just a temporary print to see if drawer works
+                      print('items on drawer tapped');
+                    },
+                    child: ExpansionTile(
+                      title: Text(
+                        items[index],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          // fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      collapsedIconColor: Colors.white,
+                      initiallyExpanded: isExpanded,
+                      onExpansionChanged: (value) {
+                        setState(() {
+                          isExpanded = value;
+                        });
+                      },
+                      children: defClassContent.map((content) {
+                        return InkWell(
+                          child: ListTile(
+                            title: Text(
+                              content,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            onTap: () {
+                              
+                            },
+                          ),
+                        );
+                      }).toList(),
                     ),
-                  ),
-                ),
+                  );
+                },
                 childCount: items.length,
               ),
             ),

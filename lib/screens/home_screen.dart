@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget{
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.1,),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.6,
+              height: MediaQuery.of(context).size.height * 0.5,
               child: Image.asset('people.png'),
             ),
           ],
