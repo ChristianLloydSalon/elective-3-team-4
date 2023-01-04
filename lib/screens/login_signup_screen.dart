@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'home_screen.dart';
+import 'package:classenger_frontend/utils/routes.dart';
 
 class LoginSignupScreen extends StatefulWidget{
   LoginSignupScreen({required this.title, super.key});
@@ -26,6 +28,18 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       onPressed: () {
         // temporary print on pressed
         print('submit button pressed');
+        // create a function that validates the email and password
+        // or create a new account based on the email and password
+        // then push to welcome screen
+        Navigator.push(
+          context,
+          Routes.generateRoute(
+            const RouteSettings(
+              name: Routes.homePageRoute,
+              arguments: null,
+            ),
+          )
+        );
       },
       child: const Icon(Icons.check),
     );
