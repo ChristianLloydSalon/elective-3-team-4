@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'screens/login_signup_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -32,6 +38,12 @@ class MyApp extends StatelessWidget {
           buttonColor: Color(0xff4e5c72),
         ),
         indicatorColor: const Color(0xff4e5c72),
+        dividerColor: Colors.white,
+        textTheme: TextTheme(
+          headlineMedium: const TextStyle(color: Colors.black),
+          headlineSmall: const TextStyle(color: Colors.black),
+          labelSmall: TextStyle(color: Colors.grey[900]),
+        ),
         // bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         //   backgroundColor: Color(0xff4e5c72),
         // ),

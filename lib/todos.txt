@@ -1,0 +1,75 @@
+-integrate everything to firebase
+-create add channel feature
+-create classroom features
+    -add create classroom feature sa drawer for instructor
+    -add function to determine if user is instructor or student
+    -general
+        -add edit capabilities if user is instructor
+    -lecture materials
+        -modify so that it takes data from database, and creates widgets dynamically
+        -can use sliverchildbuilder delegate
+        -give instructors edit and create access
+        -also create checker if naa bay attachment such as files or links
+    -all other channels
+        -FOR INSTRUCTORS:
+        -create post nga button
+        -edit post nga button
+        -dapat maka attach ug pic, or files, or links
+        -dapat maka view sa submissions
+        -must be able to put due date
+        -FOR STUDENTS:
+        -dapat maka attach sad ug pic, files, links, pero dapat naay submit button
+        -must include edit submission button
+    -must create function that fetches all channels of a subject
+    -what if ang general ra maoy i-default nga channel nig create sa classroo, + chats
+    -nya if maggamag channel, if gusto mag post, the instructor can choose if mo receive ba siyag submissions
+-create chat features
+    -c/o dolph
+-authentication
+    -set user variable as instructor or student once authentication is done
+-must set minimum height and width kay mo overflow if free to resize ra ang user tabang
+
+
+
+SCREENS:
+-signup/login [/]
+-home [/]
+    -fetch username for "welcome back, $user" line [/]
+    (INSTRUCTOR)
+    -add button at bottom of drawing for adding classroom [/]
+    -must generate random code for entering classroom [/]
+    -add classroom to instructor user [/]
+    (STUDENT)
+    -add button at bottom of drawing for joining classroom [/]
+    -add classroom to student user [/]
+-drawers
+    -fetching of classrooms from firebase
+-general channel 
+    -create edit button [/]
+    -make a way nga maka edit ug header and section ang instructor
+-generic channel 
+    (INSTRUCTOR)
+    -create post button
+    -edit post 
+    -delete post 
+        -must be able to have header and body text
+        -can attach link, files, videos, images
+    -instructor has option to receive submissions or not
+    -set deadlines
+    -view submissions 
+    (STUDENT)
+    -view post
+    -submit/attach files, link, img, videos 
+    -resubmit files 
+-group chat 
+    -send text, img, files, videos, links 
+-user settings
+    -logout
+    -change username
+    -profile pic 
+    -delete acc 
+
+
+
+notes:
+-to create a popup widget, use the showDialog() widget
