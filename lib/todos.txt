@@ -33,17 +33,22 @@
 
 SCREENS:
 -signup/login [/]
--home [/]
+-home
     -fetch username for "welcome back, $user" line [/]
     (INSTRUCTOR)
     -add button at bottom of drawing for adding classroom [/]
     -must generate random code for entering classroom [/]
     -add classroom to instructor user [/]
+    -generate default channels, e.g. general and group chat
     (STUDENT)
     -add button at bottom of drawing for joining classroom [/]
     -add classroom to student user [/]
+    -fetch default channels
 -drawers
-    -fetching of classrooms from firebase
+    -fetching of classrooms from firebase [/]
+    -fetching of channels
+    -adding of channels
+    -deleting of channels
 -general channel 
     -create edit button [/]
     -make a way nga maka edit ug header and section ang instructor

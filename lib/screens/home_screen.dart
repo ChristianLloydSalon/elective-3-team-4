@@ -9,8 +9,6 @@ class HomeScreen extends StatelessWidget{
 
   HomeScreen({super.key});
 
-  //just some dummy data
-  //make a function to fetch user name
   String user = getUserName();
 
   @override 
