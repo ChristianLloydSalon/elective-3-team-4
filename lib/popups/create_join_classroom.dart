@@ -47,13 +47,14 @@ class _CreateJoinClassroomState extends State<CreateJoinClassroom> {
 
     if(docs.isNotEmpty) {
       final DocumentSnapshot document = docs.first;
-      final CollectionReference  classroomsRef = document.reference.collection('classrooms');
-      await classroomsRef.doc().set({
-        'classroom name': fieldText,
-        'classcode': classcode
+      // final DocumentReference<Object?>  classroomsRef = document.reference;
+      final CollectionReference<Map<String, dynamic>>  classroomsRef = document.reference.collection('classrooms');
+      await classroomsRef.add({
+        'class name': fieldText,
+        'class code': classcode,
       });
-      ClassInfo.classroomIsEmpty = false;
-      ClassInfo.addController();
+      // ClassInfo.classroomIsEmpty = false;
+      // ClassInfo.addController();
     } else {
       print('classroom not found');
     }
@@ -71,10 +72,10 @@ class _CreateJoinClassroomState extends State<CreateJoinClassroom> {
     
     if(classroom.isNotEmpty) {
       final DocumentSnapshot document = classroom.first;
-      await document.reference.update({
-        'students': {
-          userID: userName
-        }
+      final CollectionReference<Map<String, dynamic>>  classroomsRef = document.reference.collection('students');
+      await classroomsRef.add({
+        'student name': userName,
+        'student ID': userID,
       });
       var classObject = document.data() as Map<String, dynamic>;
       className = classObject['classroom name'];
@@ -88,13 +89,13 @@ class _CreateJoinClassroomState extends State<CreateJoinClassroom> {
 
     if(user.isNotEmpty) {
       final DocumentSnapshot document = user.first;
-      final CollectionReference  classroomsRef = document.reference.collection('classrooms');
-      await classroomsRef.doc().set({
-        'classroom name': className,
-        'classcode': classcode
+      final CollectionReference<Map<String, dynamic>>  classroomsRef = document.reference.collection('classrooms');
+      await classroomsRef.add({
+        'class name': className,
+        'class code': classcode,
       });
-      ClassInfo.classroomIsEmpty = false;
-      ClassInfo.addController();
+      // ClassInfo.classroomIsEmpty = false;
+      // ClassInfo.addController();
     } else {
       print('user not found ln 87...username: $userName');
     }
@@ -160,11 +161,13 @@ class _CreateJoinClassroomState extends State<CreateJoinClassroom> {
                 });
                 return 'This field must not be empty';
               }
-              if(!doesClassroomExist(value)) {
-                setState(() {
-                  errorMsg = 'Classroom does not exist';
-                });
-                return 'Classroom does not exist';
+              if (userRole != 'Instructor') {
+                if(!doesClassroomExist(value)) {
+                  setState(() {
+                    errorMsg = 'Classroom does not exist';
+                  });
+                  return 'Classroom does not exist';
+                }
               }
               return null;
             },

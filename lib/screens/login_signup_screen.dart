@@ -4,9 +4,10 @@ import 'home_screen.dart';
 import 'package:classenger_frontend/utils/routes.dart';
 import 'package:classenger_frontend/utils/user_credentials.dart';
 import 'package:classenger_frontend/utils/auth_service.dart';
+// import 'package:classenger_frontend/widgets/drawer_custom.dart';
 import 'dart:async';
 
-class LoginSignupScreen extends StatefulWidget{
+class LoginSignupScreen extends StatefulWidget {
   LoginSignupScreen({required this.title, super.key});
 
   String title;
@@ -15,8 +16,8 @@ class LoginSignupScreen extends StatefulWidget{
   State<LoginSignupScreen> createState() => _LoginSignupScreenState();
 }
 
-class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTickerProviderStateMixin{
-
+class _LoginSignupScreenState extends State<LoginSignupScreen>
+    with SingleTickerProviderStateMixin {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
@@ -26,7 +27,11 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
   String? _email;
   String? _password;
   String? _userName;
-  String? _emailErrorMsg, _passwordErrorMsg, fnErrorMsg, lnErrorMsg, nameErrorMsg;
+  String? _emailErrorMsg,
+      _passwordErrorMsg,
+      fnErrorMsg,
+      lnErrorMsg,
+      nameErrorMsg;
   final emailKey = GlobalKey<FormFieldState>();
   final passwordKey = GlobalKey<FormFieldState>();
   final userNameKey = GlobalKey<FormState>();
@@ -37,12 +42,12 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
   late AuthService authUser;
   late Timer timer;
 
-  bool isEmailValid(String email){
+  bool isEmailValid(String email) {
     String bisuEmail = '@bisu.edu.ph';
     int idx = email.indexOf(bisuEmail, 0);
 
     // checking if email is correct
-    if(idx > -1 && email.length - 12 == idx){
+    if (idx > -1 && email.length - 12 == idx) {
       return true;
     }
     return false;
@@ -57,8 +62,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
     });
   }
 
-  @override 
-  void initState(){
+  @override
+  void initState() {
     super.initState();
     tabController = TabController(vsync: this, length: 2);
     tabController.addListener(() {
@@ -69,8 +74,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
     });
   }
 
-  @override 
-  void dispose(){
+  @override
+  void dispose() {
     emailController.dispose();
     passwordController.dispose();
     firstNameController.dispose();
@@ -79,13 +84,13 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
     super.dispose();
   }
 
-  @override 
-  Widget build(BuildContext context){
+  @override
+  Widget build(BuildContext context) {
     double textFieldWidth = MediaQuery.of(context).size.width * 0.5;
 
     // submit button
-    FloatingActionButton submitButton =  FloatingActionButton(
-      onPressed: () async{
+    FloatingActionButton submitButton = FloatingActionButton(
+      onPressed: () async {
         submittedForm = true;
 
         bool emailValidated = emailKey.currentState!.validate();
@@ -98,16 +103,16 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
 
         // create user object
         AuthService authUser = AuthService(
-          email: _email!, 
+          email: _email!,
           password: _password!,
           role: character!,
         );
 
         // if user wants to sign up
-        if(tabSelected == 0) {
+        if (tabSelected == 0) {
           try {
-            if(await authUser.doesUserExist()) {
-              setState(() { 
+            if (await authUser.doesUserExist()) {
+              setState(() {
                 _emailErrorMsg = 'User already exists';
               });
             } else {
@@ -124,7 +129,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
                         children: <Widget>[
                           TextFormField(
                             decoration: InputDecoration(
-                              label: const Text('e.g. LastName, FirstName M.I.'),
+                              label:
+                                  const Text('e.g. LastName, FirstName M.I.'),
                               errorText: nameErrorMsg,
                             ),
                             onChanged: (value) {
@@ -157,14 +163,13 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
 
                                 // pushing to next screen, the welcome screen
                                 Navigator.push(
-                                  context,
-                                  Routes.generateRoute(
-                                    const RouteSettings(
-                                      name: Routes.homePageRoute,
-                                      arguments: null,
-                                    ),
-                                  )
-                                );
+                                    context,
+                                    Routes.generateRoute(
+                                      const RouteSettings(
+                                        name: Routes.homePageRoute,
+                                        arguments: null,
+                                      ),
+                                    ));
                               }
                             },
                             child: const Text('Submit'),
@@ -181,14 +186,15 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
           }
         } else {
           // if user wants to log in
-          if(!await authUser.doesUserExist() || !await authUser.isPasswordValid()){
-            setState(() { 
+          if (!await authUser.doesUserExist() ||
+              !await authUser.isPasswordValid()) {
+            setState(() {
               _emailErrorMsg = 'E-mail might be incorrect';
               _passwordErrorMsg = 'Password might be incorrect';
             });
             return;
           }
-          setState(() { 
+          setState(() {
             _emailErrorMsg = null;
             _passwordErrorMsg = null;
           });
@@ -197,60 +203,58 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
           saveUserRole(character!);
           // must throw username from firestore
           saveUserName(authUser.userName!);
-          
+
           // pushing to home screen
           Navigator.push(
-            context,
-            Routes.generateRoute(
-              const RouteSettings(
-                name: Routes.homePageRoute,
-                arguments: null,
-              ),
-            )
-          );
+              context,
+              Routes.generateRoute(
+                const RouteSettings(
+                  name: Routes.homePageRoute,
+                  arguments: null,
+                ),
+              ));
         }
       },
       child: const Icon(Icons.check),
     );
 
     // users selection radio boxes
-    StatefulBuilder radioBoxUsers = StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.25,
-              child: RadioListTile<String>(
-                title: const Text('Instructor'),
-                activeColor: const Color(0xff5e9d8d),
-                groupValue: character,
-                value: 'Instructor', 
-                onChanged: (String? value) {
-                  setState(() {
-                    character = value;
-                  });
-                },
-              ),
+    StatefulBuilder radioBoxUsers =
+        StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.25,
+            child: RadioListTile<String>(
+              title: const Text('Instructor'),
+              activeColor: const Color(0xff5e9d8d),
+              groupValue: character,
+              value: 'Instructor',
+              onChanged: (String? value) {
+                setState(() {
+                  character = value;
+                });
+              },
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.25,
-              child: RadioListTile<String>(
-                title: const Text('Student'),
-                activeColor: const Color(0xff5e9d8d),
-                groupValue: character,
-                value: 'Student', 
-                onChanged: (String? value) {
-                  setState(() {
-                    character = value;
-                  });
-                },
-              ),
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.25,
+            child: RadioListTile<String>(
+              title: const Text('Student'),
+              activeColor: const Color(0xff5e9d8d),
+              groupValue: character,
+              value: 'Student',
+              onChanged: (String? value) {
+                setState(() {
+                  character = value;
+                });
+              },
             ),
-          ],
-        );
-      }
-    );
+          ),
+        ],
+      );
+    });
 
     // text fields
     List<Widget> formContent = [
@@ -266,13 +270,13 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
             icon: const Icon(Icons.email),
           ),
           validator: (value) {
-            if(value == '' && submittedForm == true){
+            if (value == '' && submittedForm == true) {
               setState(() {
                 _emailErrorMsg = 'Please enter an e-mail';
               });
               return 'Please enter an e-mail';
             }
-            if(!isEmailValid(value!) && submittedForm == true){
+            if (!isEmailValid(value!) && submittedForm == true) {
               setState(() {
                 _emailErrorMsg = 'Invalid e-mail';
               });
@@ -281,7 +285,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
             return null;
           },
           onChanged: (value) {
-            if(emailKey.currentState!.validate() && isEmailValid(value)){
+            if (emailKey.currentState!.validate() && isEmailValid(value)) {
               _email = value;
               setState(() {
                 _emailErrorMsg = null;
@@ -290,7 +294,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
           },
         ),
       ),
-      const SizedBox(height: 10,),
+      const SizedBox(
+        height: 10,
+      ),
       // text field for password
       SizedBox(
         width: textFieldWidth,
@@ -304,7 +310,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
             icon: const Icon(Icons.password),
           ),
           validator: (value) {
-            if(value == '' && submittedForm == true){
+            if (value == '' && submittedForm == true) {
               setState(() {
                 _passwordErrorMsg = 'Please enter an password';
               });
@@ -317,77 +323,87 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> with SingleTicker
               obscureText = false;
               startTimer();
             });
-              if(passwordKey.currentState!.validate()){
-                _password = value;
-                _passwordErrorMsg = null;
-              }
+            if (passwordKey.currentState!.validate()) {
+              _password = value;
+              _passwordErrorMsg = null;
+            }
           },
         ),
       ),
-      const SizedBox(height: 30,),
+      const SizedBox(
+        height: 30,
+      ),
       radioBoxUsers,
-      const SizedBox(height: 50,),
+      const SizedBox(
+        height: 50,
+      ),
       submitButton,
     ];
 
     return isLoading
-    ? Center(
-      child: Visibility(
-        visible: isLoading,
-        child: const CircularProgressIndicator(),
-      ),
-    )
-    : DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Container(
-            height: AppBar().preferredSize.height,
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              children: [
-                Image.asset(
-                  'logo.png',
-                  fit: BoxFit.fitHeight,
+        ? Center(
+            child: Visibility(
+              visible: isLoading,
+              child: const CircularProgressIndicator(),
+            ),
+          )
+        : DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                title: Container(
+                  height: AppBar().preferredSize.height,
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'logo.png',
+                        fit: BoxFit.fitHeight,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(widget.title),
+                    ],
+                  ),
                 ),
-                const SizedBox(width: 10,),
-                Text(widget.title),
-              ],
+              ),
+              // tabs contents
+              body: TabBarView(
+                controller: tabController,
+                children: [
+                  // sign up tab
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: formContent,
+                  ),
+                  // log in tab
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: formContent,
+                  ),
+                ],
+              ),
+              // sign in log in tabs
+              bottomNavigationBar: TabBar(
+                tabs: const [
+                  Tab(
+                    text: 'Sign up',
+                  ),
+                  Tab(
+                    text: 'Log in',
+                  ),
+                ],
+                labelColor: const Color(0xff4e5c72),
+                onTap: (value) {
+                  setState(() {
+                    tabSelected = value;
+                  });
+                },
+                indicatorWeight: 10,
+              ),
             ),
-          ),
-        ),
-        // tabs contents
-        body: TabBarView(
-          controller: tabController,
-          children: [
-            // sign up tab
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: formContent,
-            ),
-            // log in tab
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: formContent,
-            ),
-          ],
-        ),
-        // sign in log in tabs
-        bottomNavigationBar: TabBar(
-            tabs: const [
-              Tab(text: 'Sign up',),
-              Tab(text: 'Log in',),
-            ],
-            labelColor: const Color(0xff4e5c72),
-            onTap: (value) {
-              setState(() {
-                tabSelected = value;
-              });
-            },
-            indicatorWeight: 10,
-          ),
-      ),
-    );
+          );
   }
 }
-

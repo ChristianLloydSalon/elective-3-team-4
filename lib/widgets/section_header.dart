@@ -15,7 +15,7 @@ class SectionHeader extends StatelessWidget{
         //   fontSize: 20,
         //   fontWeight: FontWeight.bold,
         // ),
-        style: Theme.of(context).textTheme.headlineMedium,
+        style: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }
