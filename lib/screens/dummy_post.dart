@@ -4,13 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:classenger_frontend/widgets/post_box.dart';
 
 class PostsScreen extends StatefulWidget{
-  final String classCode;
-  const PostsScreen({super.key, required this.classCode});
+  PostsScreen({super.key, required this.classCode});
 
+  String classCode;
   static BuildContext? postContext;
 
   @override
   State<PostsScreen> createState() => _PostsScreenState();
+
+  // static void _showPostDialog(BuildContext context) => _showDialog();
+
+  // static void _showDialog(BuildContext context) => _show(context);
 }
 
 class _PostsScreenState extends State<PostsScreen> {
@@ -74,16 +78,16 @@ class _PostsScreenState extends State<PostsScreen> {
               ),
               const SizedBox(height: 8),
               Expanded(
-                child: StreamBuilder(
-                  stream: snapshot.data!.docs.first.reference
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: postRef?.docs.first.reference
                     .collection('posts')
-                    .orderBy('timestamp', descending: true)
+                    .orderBy('timestamp')
                     .snapshots(),
-                  builder: (context, innerSnapshot) {
-                    if (innerSnapshot.hasError) {
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
                       print('snapshot has error');
-                    } else if (innerSnapshot.hasData && innerSnapshot.data!.docs.isNotEmpty) {
-                      final posts = innerSnapshot.data?.docs;
+                    } else if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                      final posts = snapshot.data?.docs;
                       List<Widget> postWidgets = [];
                       for (var post in posts!) {
                         final header = post['header'];
@@ -93,10 +97,9 @@ class _PostsScreenState extends State<PostsScreen> {
                           header: header,
                           body: body,
                           timestamp: timestamp,
-                          classcode: widget.classCode,
-                          id: post.id,
                         );
                         postWidgets.add(postWidget);
+                        print('this is postWidgets $postWidgets');
                       }
                       return CustomScrollView(
                         slivers: [

@@ -12,6 +12,7 @@ class SectionContent extends StatelessWidget{
       child: Text(
         text,
         style: Theme.of(context).textTheme.bodyMedium,
+        textAlign: TextAlign.left,
       ),
     );
   }

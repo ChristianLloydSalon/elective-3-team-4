@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:classenger_frontend/screens/home_screen.dart';
 import 'package:classenger_frontend/screens/posts_screen.dart';
 import 'package:classenger_frontend/screens/group_chat_screen.dart';
-import 'package:classenger_frontend/popups/create_post.dart';
+import 'package:classenger_frontend/popups/create_edit_post.dart';
 import 'package:classenger_frontend/utils/user_credentials.dart';
 import 'dart:async';
 
@@ -189,6 +189,10 @@ class _DefaultScreenState extends State<DefaultScreen> {
                                           // class content sublist
                                           // actions when tapped
                                           if (content == 'Posts') {
+                                            setState(() {
+                                              scaffoldBody = PostsScreen(
+                                                classCode: streamSnapshot.data!.docs[index]['class code'],);
+                                            });
                                             if(userRole == 'Instructor') {
                                               setState(() {
                                                 createPostButton = FloatingActionButton(
@@ -199,7 +203,7 @@ class _DefaultScreenState extends State<DefaultScreen> {
                                                       context: PostsScreen.postContext!, 
                                                       builder: (BuildContext context) {
                                                         print('this is context: ${context.toString()}...');
-                                                        return CreatePost(
+                                                        return CreateEditPost(
                                                           classCode: streamSnapshot.data!.docs[index]['class code'],
                                                           // post: streamSnapshot.data!.docs.
                                                         );
@@ -210,10 +214,6 @@ class _DefaultScreenState extends State<DefaultScreen> {
                                                 );
                                               });
                                             }
-                                            setState(() {
-                                              scaffoldBody = PostsScreen(
-                                                classCode: streamSnapshot.data!.docs[index]['class code']);
-                                            });
                                           }
                                           if (content == 'Group Chat') {
                                             //set state of scaffoldBody to group chat body

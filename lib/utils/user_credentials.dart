@@ -1,6 +1,7 @@
 late String userRole;
 late String userName;
 late String userID;
+late String classcode;
 
 void saveUserRole(String user){
   userRole = user;
@@ -24,4 +25,12 @@ void saveUserID(String id){
 
 String getUserID(){
   return userID;
+}
+
+void saveClasscode(String code){
+  classcode = code;
+}
+
+String getClasscode(){
+  return classcode;
 }

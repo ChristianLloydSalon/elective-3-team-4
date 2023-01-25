@@ -265,7 +265,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen>
           key: emailKey,
           controller: emailController,
           decoration: InputDecoration(
-            labelText: 'E-mail',
+            labelText: 'E-mail (e.g. xxx@bisu.edu.ph)',
             errorText: _emailErrorMsg,
             icon: const Icon(Icons.email),
           ),
